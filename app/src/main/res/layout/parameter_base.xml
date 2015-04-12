@@ -4,34 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:textSize="24sp"
+        android:layout_margin="@dimen/padding_normal"
+        android:layout_gravity="center_vertical"/>
 
-        <TextView
-            android:id="@+id/title_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="24sp"
-            android:layout_margin="@dimen/padding_normal"
-            android:layout_gravity="center_vertical"/>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="#CACACA"/>
-
-        <LinearLayout
-            android:id="@+id/parameter_container"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="4"/>
-
-    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/parameter_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
 
     <View
         android:layout_width="match_parent"

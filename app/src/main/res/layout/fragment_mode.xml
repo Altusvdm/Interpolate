@@ -5,33 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <za.co.afrikaburn.interpolate.ui.views.parameters.ColorParameter
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:parameterTitle="From Color"/>
+        android:layout_height="match_parent">
 
-    <za.co.afrikaburn.interpolate.ui.views.parameters.ColorParameter
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:parameterTitle="To Color"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <za.co.afrikaburn.interpolate.ui.views.parameters.SwitchParameter
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:parameterTitle="Switch"/>
+            <za.co.afrikaburn.interpolate.ui.views.parameters.ColorParameter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="From Color"/>
 
-    <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:startNumber="5"
-        app:endNumber="15"
-        app:parameterTitle="Slider"/>
+            <za.co.afrikaburn.interpolate.ui.views.parameters.ColorParameter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="To Color"/>
 
-    <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:startNumber="0"
-        app:endNumber="255"
-        app:parameterTitle="Byte"/>
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SwitchParameter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="Switch"/>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:startNumber="5"
+                app:endNumber="15"
+                app:parameterTitle="Slider"/>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:startNumber="0"
+                app:endNumber="255"
+                app:parameterTitle="Byte"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
