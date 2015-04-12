@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BaseParameter">
+        <attr name="parameterTitle" format="string"/>
+    </declare-styleable>
+</resources>

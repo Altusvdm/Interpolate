@@ -14,15 +14,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import za.co.afrikaburn.interpolate.R;
-import za.co.afrikaburn.interpolate.ui.views.colorPicker.ColorPickerDialog;
 
 /**
  * Created by Altus on 2015/04/11.
  */
 public class BaseModeFragment extends BaseFragment {
-
-    @InjectView(R.id.select_color)
-    Button selectColor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,20 +30,5 @@ public class BaseModeFragment extends BaseFragment {
         }
 
         return rootView;
-    }
-
-    @OnClick(R.id.select_color)
-    public void onSelectColor() {
-        ColorDrawable drawable = (ColorDrawable) selectColor.getBackground();
-        int color = drawable.getColor();
-
-        ColorPickerDialog pickerDialog = new ColorPickerDialog(getActivity(), color);
-        pickerDialog.setOnColorChangedListener(new ColorPickerDialog.OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int color) {
-                selectColor.setBackgroundColor(color);
-            }
-        });
-        pickerDialog.show();
     }
 }

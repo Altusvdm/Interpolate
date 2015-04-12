@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/select_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal"
+        android:layout_margin="@dimen/padding_normal"
+        android:text="Select colour"
+        android:layout_gravity="center_vertical"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"/>
+
+    <View
+        android:id="@+id/preview_color"
+        android:layout_width="@dimen/cube_size_normal"
+        android:layout_height="@dimen/cube_size_normal"
+        android:layout_margin="@dimen/padding_small"/>
+
+
+</LinearLayout>
