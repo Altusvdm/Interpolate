@@ -3,4 +3,8 @@
     <declare-styleable name="BaseParameter">
         <attr name="parameterTitle" format="string"/>
     </declare-styleable>
+    <declare-styleable name="SliderParameter">
+        <attr name="startNumber" format="integer"/>
+        <attr name="endNumber" format="integer"/>
+    </declare-styleable>
 </resources>

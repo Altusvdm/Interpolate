@@ -15,4 +15,23 @@
         android:layout_height="wrap_content"
         app:parameterTitle="To Color"/>
 
+    <za.co.afrikaburn.interpolate.ui.views.parameters.SwitchParameter
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:parameterTitle="Switch"/>
+
+    <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:startNumber="5"
+        app:endNumber="15"
+        app:parameterTitle="Slider"/>
+
+    <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:startNumber="0"
+        app:endNumber="255"
+        app:parameterTitle="Byte"/>
+
 </LinearLayout>

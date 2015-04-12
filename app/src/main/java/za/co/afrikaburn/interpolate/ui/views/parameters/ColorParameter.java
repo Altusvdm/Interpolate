@@ -23,6 +23,7 @@ public class ColorParameter extends BaseParameter {
     public ColorParameter(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
     @Override
     public int getParameterLayout() {
         return R.layout.parameter_color;

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Attr;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import za.co.afrikaburn.interpolate.R;
@@ -39,6 +41,8 @@ public abstract class BaseParameter extends LinearLayout {
             a.recycle();
         }
 
+        handleAttrs(attrs);
+
         setupView();
     }
 
@@ -58,5 +62,9 @@ public abstract class BaseParameter extends LinearLayout {
     public abstract int getParameterLayout();
 
     public abstract void setupParameter();
+
+    protected void handleAttrs(AttributeSet attrs) {
+
+    }
 
 }
