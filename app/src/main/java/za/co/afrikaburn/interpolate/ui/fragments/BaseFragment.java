@@ -2,6 +2,7 @@ package za.co.afrikaburn.interpolate.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import za.co.afrikaburn.interpolate.R;
 import za.co.afrikaburn.interpolate.ui.activities.MainActivity;
@@ -10,6 +11,9 @@ import za.co.afrikaburn.interpolate.ui.activities.MainActivity;
  * Created by Altus on 2015/04/11.
  */
 public class BaseFragment extends Fragment {
+
+    protected  View rootView;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

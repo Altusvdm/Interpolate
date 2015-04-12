@@ -19,8 +19,6 @@ import za.co.afrikaburn.interpolate.ui.adapters.CubeGridAdapter;
  */
 public class GridFragment extends BaseFragment {
 
-    View rootView;
-
     @InjectView(R.id.main_grid_view)
     GridView cubeGrid;
 
