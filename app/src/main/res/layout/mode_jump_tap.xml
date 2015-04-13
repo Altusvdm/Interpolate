@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:startNumber="1"
+        app:endNumber="255"
+        app:parameterTitle="Number of Colours"/>
+
+    <za.co.afrikaburn.interpolate.ui.views.parameters.SwitchParameter
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:parameterTitle="Random Jump"/>
+
+</LinearLayout>

@@ -29,6 +29,7 @@ public class SwitchParameter extends BaseParameter {
 
     }
 
+    @Override
     public void setValue(int value) {
         parameterSwitch.setChecked(value == 1);
     }

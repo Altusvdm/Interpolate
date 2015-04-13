@@ -78,6 +78,7 @@ public class SliderParameter extends BaseParameter {
         });
     }
 
+    @Override
     public void setValue(int value) {
         parameterSlider.setProgress(value - mStart);
     }

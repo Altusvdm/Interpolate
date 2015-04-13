@@ -49,6 +49,7 @@ public class ColorParameter extends BaseParameter {
         pickerDialog.show();
     }
 
+    @Override
     public void setValue(int value) {
         previewColor.setBackgroundColor(value);
     }

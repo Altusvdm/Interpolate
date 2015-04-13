@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_radial" android:title="Radial"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_linear" android:title="Linear"
+        android:orderInCategory="101" app:showAsAction="never" />
+    <item android:id="@+id/action_jump_tap" android:title="Jump Tap"
+        android:orderInCategory="102" app:showAsAction="never" />
+    <item android:id="@+id/action_solid_tap" android:title="Solid Tap"
+        android:orderInCategory="103" app:showAsAction="never" />
+</menu>

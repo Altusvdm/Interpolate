@@ -63,6 +63,8 @@ public abstract class BaseParameter extends LinearLayout {
 
     public abstract void setupParameter();
 
+    public abstract void setValue(int value);
+
     protected void handleAttrs(AttributeSet attrs) {
 
     }

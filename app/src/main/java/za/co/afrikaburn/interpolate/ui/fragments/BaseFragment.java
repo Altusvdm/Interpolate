@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import za.co.afrikaburn.interpolate.InterpolateApplication;
 import za.co.afrikaburn.interpolate.R;
 import za.co.afrikaburn.interpolate.ui.activities.MainActivity;
 
@@ -17,12 +18,14 @@ public class BaseFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        InterpolateApplication.registerOnEventBus(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        YocoApplication.unregisterOnEventBus(this);
+        InterpolateApplication.unregisterOnEventBus(this);
     }
 
     @Override

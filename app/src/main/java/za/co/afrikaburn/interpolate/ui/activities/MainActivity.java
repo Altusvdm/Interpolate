@@ -11,7 +11,9 @@ import android.widget.RelativeLayout;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import za.co.afrikaburn.interpolate.InterpolateApplication;
 import za.co.afrikaburn.interpolate.R;
+import za.co.afrikaburn.interpolate.events.MenuItemEvent;
 import za.co.afrikaburn.interpolate.model.Cube;
 import za.co.afrikaburn.interpolate.model.CubeMode;
 import za.co.afrikaburn.interpolate.ui.adapters.CubeGridAdapter;
@@ -64,17 +66,19 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == android.R.id.home) {
+            onBackPressed();
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        boolean isHandled = super.onOptionsItemSelected(item);
+        if (!isHandled) {
+            InterpolateApplication.postOnEventBus(new MenuItemEvent(item));
+        }
+
+        return isHandled;
     }
 
     public void showFragment(Fragment fragment) {

@@ -7,4 +7,7 @@
         <attr name="startNumber" format="integer"/>
         <attr name="endNumber" format="integer"/>
     </declare-styleable>
+    <declare-styleable name="ModeView">
+        <attr name="modeTitle" format="string"/>
+    </declare-styleable>
 </resources>
