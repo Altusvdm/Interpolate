@@ -44,8 +44,6 @@ public class SliderParameter extends BaseParameter {
         } finally {
             a.recycle();
         }
-
-        Log.d("SEEK", "start = " + mStart + " end = " + mEnd);
     }
 
     @Override
@@ -65,7 +63,6 @@ public class SliderParameter extends BaseParameter {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int currentValue = mStart + progress;
-                Log.d("SEEK", "start = " + mStart + " progress = " + progress + " current = " + currentValue);
                 currentNumber.setText("" + currentValue);
             }
 
@@ -79,5 +76,9 @@ public class SliderParameter extends BaseParameter {
 
             }
         });
+    }
+
+    public void setValue(int value) {
+        parameterSlider.setProgress(value - mStart);
     }
 }

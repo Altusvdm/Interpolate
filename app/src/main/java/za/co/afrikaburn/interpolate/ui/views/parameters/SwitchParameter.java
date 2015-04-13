@@ -28,4 +28,8 @@ public class SwitchParameter extends BaseParameter {
     public void setupParameter() {
 
     }
+
+    public void setValue(int value) {
+        parameterSwitch.setChecked(value == 1);
+    }
 }

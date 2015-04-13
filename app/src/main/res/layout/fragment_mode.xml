@@ -15,6 +15,7 @@
             android:orientation="vertical">
 
             <za.co.afrikaburn.interpolate.ui.views.parameters.ColorParameter
+                android:id="@+id/from_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:parameterTitle="From Color"/>
@@ -25,11 +26,13 @@
                 app:parameterTitle="To Color"/>
 
             <za.co.afrikaburn.interpolate.ui.views.parameters.SwitchParameter
+                android:id="@+id/param_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:parameterTitle="Switch"/>
 
             <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:id="@+id/param_slider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:startNumber="5"
