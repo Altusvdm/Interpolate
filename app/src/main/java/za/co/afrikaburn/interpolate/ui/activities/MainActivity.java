@@ -18,6 +18,7 @@ import za.co.afrikaburn.interpolate.model.Cube;
 import za.co.afrikaburn.interpolate.model.CubeMode;
 import za.co.afrikaburn.interpolate.ui.adapters.CubeGridAdapter;
 import za.co.afrikaburn.interpolate.ui.fragments.BaseModeFragment;
+import za.co.afrikaburn.interpolate.ui.fragments.FindCubesFragment;
 import za.co.afrikaburn.interpolate.ui.fragments.GridFragment;
 
 
@@ -37,7 +38,7 @@ public class MainActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
         if (savedInstanceState == null) {
-            showFragment(new BaseModeFragment());
+            showFragment(new FindCubesFragment());
         }
     }
 
