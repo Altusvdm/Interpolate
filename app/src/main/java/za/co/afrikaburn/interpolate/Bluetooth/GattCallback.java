@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothProfile;
 import android.util.Log;
+import android.widget.Toast;
 
 import za.co.afrikaburn.interpolate.Bluetooth.Events.CharacteristicReadEvent;
 import za.co.afrikaburn.interpolate.Bluetooth.Events.ServicesDiscoveredEvent;
@@ -57,6 +58,17 @@ public class GattCallback extends android.bluetooth.BluetoothGattCallback {
             InterpolateApplication.postOnEventBus(new CharacteristicReadEvent(characteristic));
             Log.i(TAG, "Charactiristic available: " + characteristic);
 //                        broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+        }
+    }
+
+    @Override
+    public void onCharacteristicWrite(BluetoothGatt gatt,
+                                      BluetoothGattCharacteristic characteristic,
+                                      int status) {
+        if (status == BluetoothGatt.GATT_SUCCESS) {
+            Toast.makeText(InterpolateApplication.getSugarContext(), "Wrote Success", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(InterpolateApplication.getSugarContext(), "Wrote Failed", Toast.LENGTH_SHORT).show();
         }
     }
 }

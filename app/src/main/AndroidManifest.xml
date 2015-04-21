@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
 
+        <meta-data android:name="com.bugsnag.android.API_KEY" android:value="91c5ae053950f51b44cb672ccd205587"/>
         <meta-data android:name="DATABASE" android:value="interpolate.db" />
         <meta-data android:name="VERSION" android:value="1" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
@@ -27,6 +28,8 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
 

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import za.co.afrikaburn.interpolate.Bluetooth.BluetoothUtils;
 import za.co.afrikaburn.interpolate.R;
 import za.co.afrikaburn.interpolate.model.Cube;
 import za.co.afrikaburn.interpolate.ui.views.CubeView;
@@ -79,9 +80,21 @@ public class AttributeAdapter extends BaseAdapter {
 
         BluetoothGattCharacteristic characteristic = getItem(i);
 
-        nameView.setText("Service: " + characteristic.getService().getUuid() + " Char: " + characteristic.getUuid());
-        addressView.setText(characteristic.getStringValue(0));
-
+        if (characteristic != null) {
+            String name = "Service: ";
+            if (characteristic.getService() != null && characteristic.getService().getUuid() != null) {
+                name = name + BluetoothUtils.lookupServer(characteristic.getService().getUuid().toString());
+            }
+            name = name + "\nChar: ";
+            if (characteristic.getUuid() != null) {
+                name = name + BluetoothUtils.lookupChar(characteristic.getUuid().toString());
+            } else {
+                name = name + "NULL CHAR UUID";
+            }
+            nameView.setText(name);
+        } else {
+            nameView.setText("NULL CHAR");
+        }
 
         return view;
     }

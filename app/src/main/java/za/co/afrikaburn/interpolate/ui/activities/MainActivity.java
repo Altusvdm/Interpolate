@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 
+import com.bugsnag.android.Bugsnag;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import za.co.afrikaburn.interpolate.InterpolateApplication;
@@ -33,6 +35,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bugsnag.init(this);
+
         setContentView(R.layout.activity_main);
 
         ButterKnife.inject(this);

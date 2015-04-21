@@ -19,10 +19,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bugsnag.android.Bugsnag;
 import com.squareup.otto.Subscribe;
+
+import java.util.UUID;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import za.co.afrikaburn.interpolate.Bluetooth.BluetoothUtils;
 import za.co.afrikaburn.interpolate.InterpolateApplication;
 import za.co.afrikaburn.interpolate.R;
 import za.co.afrikaburn.interpolate.events.MenuItemEvent;

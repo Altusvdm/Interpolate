@@ -3,6 +3,7 @@ package za.co.afrikaburn.interpolate;
 import android.content.pm.PackageManager;
 import android.widget.Toast;
 
+import com.bugsnag.android.Bugsnag;
 import com.orm.SugarApp;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
