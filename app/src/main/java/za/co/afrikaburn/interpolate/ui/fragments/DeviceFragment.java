@@ -208,9 +208,11 @@ public class DeviceFragment extends BaseFragment {
 
     @Subscribe
     public void writeChar(WriteCharaEvent event) {
+        String toast = "Write to: " + event.uuid + " with: " + event.value;
         if (hasLoaded) {
             BluetoothGattCharacteristic chara = BluetoothUtils.charaMap.get(event.uuid);
             if (chara != null) {
+
                 Integer size = BluetoothUtils.char_size.get(event.uuid);
                 byte[] val;
                 if (size == 1) {
@@ -225,16 +227,18 @@ public class DeviceFragment extends BaseFragment {
                                     (byte) event.value
                             };
                 }
-
+                toast = toast + "\nFound char byte is: " + val;
                 chara.setValue(val);
                 chara.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
                 bluetoothGatt.writeCharacteristic(chara);
             } else {
-                Toast.makeText(getActivity(), "No Characteristic", Toast.LENGTH_SHORT).show();
+                toast = toast + "\nNo characteristic :(";
             }
         } else {
-            Toast.makeText(getActivity(), "Still loading", Toast.LENGTH_SHORT).show();
+            toast = toast + "\nStill loading";
         }
+
+        Toast.makeText(getActivity(), toast, Toast.LENGTH_SHORT).show();
     }
 
     public void writeToChar(BluetoothGattCharacteristic chara) {
