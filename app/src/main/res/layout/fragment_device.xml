@@ -1,50 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<ScrollView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="1">-->
+    <ProgressBar
+        android:id="@+id/loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
 
-        <!--<LinearLayout-->
-            <!--android:id="@+id/cont"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="vertical"/>-->
-
-    <!--</ScrollView>-->
-
-    <ListView
-        android:id="@+id/attributes_list"
+    <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:visibility="gone">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/write"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="write"/>
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/write_reliable"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="write reliable"/>
+            <Spinner
+                android:id="@+id/mode_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/pulse_spinner"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown" />
+
+                <Button
+                    android:id="@+id/send_pulse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pulse"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:id="@+id/speed_param"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="Speed"
+                app:startNumber="0"
+                app:endNumber="65535"/>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:id="@+id/pulse_bright_param"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="Pulse Brightness"
+                app:startNumber="0"
+                app:endNumber="65535"/>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:id="@+id/tap_sense_param"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="Tap Sense"/>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:id="@+id/wave_width_param"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="Wave Width"/>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:id="@+id/linear_angle_param"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="Linear Angle"/>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:id="@+id/radial_x_param"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="Radial X"
+                app:startNumber="0"
+                app:endNumber="65535"/>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:id="@+id/radial_y_param"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="Radial Y"
+                app:startNumber="0"
+                app:endNumber="65535"/>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:id="@+id/pulse_width_param"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="Pulse Width"
+                app:startNumber="0"
+                app:endNumber="65535"/>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:id="@+id/pulse_speed_param"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="Pulse Speed"
+                app:startNumber="0"
+                app:endNumber="65535"/>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:id="@+id/tap_limit_param"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:parameterTitle="Pulse Speed"/>
+
+            <za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter
+                android:id="@+id/hue_param"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/hue_bar"
+                app:parameterTitle="Hue"
+                app:startNumber="0"
+                app:endNumber="65535"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#343434"/>
+
+            <Button
+                android:id="@+id/close_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Close"/>
 
         </LinearLayout>
 
-    <Button
-        android:id="@+id/close_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Close"/>
+    </ScrollView>
 
 </LinearLayout>

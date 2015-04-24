@@ -10,12 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
+import android.widget.Scroller;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bugsnag.android.Bugsnag;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -26,30 +32,57 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import za.co.afrikaburn.interpolate.Bluetooth.BluetoothUtils;
-import za.co.afrikaburn.interpolate.Bluetooth.Events.CharacteristicReadEvent;
 import za.co.afrikaburn.interpolate.Bluetooth.Events.ServicesDiscoveredEvent;
+import za.co.afrikaburn.interpolate.Bluetooth.Events.WriteCharaEvent;
+import za.co.afrikaburn.interpolate.InterpolateApplication;
 import za.co.afrikaburn.interpolate.R;
 import za.co.afrikaburn.interpolate.ui.adapters.AttributeAdapter;
-import za.co.afrikaburn.interpolate.ui.adapters.BLEDeviceListAdapter;
-import za.co.afrikaburn.interpolate.ui.adapters.MapListAdapter;
+import za.co.afrikaburn.interpolate.ui.adapters.CommandAdapter;
+import za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter;
 
 /**
  * Created by Altus on 2015/04/17.
  */
 public class DeviceFragment extends BaseFragment {
 
-    @InjectView(R.id.attributes_list)
-    ListView attributeList;
-//    @InjectView(R.id.cont)
-//    LinearLayout container;
-
-    AttributeAdapter attributeAdapter;
+    @InjectView(R.id.scroll_view)
+    ScrollView scrollView;
+    @InjectView(R.id.mode_spinner)
+    Spinner modeSpinner;
+    @InjectView(R.id.pulse_spinner)
+    Spinner pulseSpinner;
+    @InjectView(R.id.speed_param)
+    SliderParameter speedParam;
+    @InjectView(R.id.pulse_bright_param)
+    SliderParameter pulseBrightParam;
+    @InjectView(R.id.tap_sense_param)
+    SliderParameter tapSenseParam;
+    @InjectView(R.id.wave_width_param)
+    SliderParameter waveWidthParam;
+    @InjectView(R.id.linear_angle_param)
+    SliderParameter linearAngleParam;
+    @InjectView(R.id.radial_x_param)
+    SliderParameter radXParam;
+    @InjectView(R.id.radial_y_param)
+    SliderParameter radYParam;
+    @InjectView(R.id.pulse_width_param)
+    SliderParameter pulseWidthParam;
+    @InjectView(R.id.pulse_speed_param)
+    SliderParameter pulseSpeedParam;
+    @InjectView(R.id.tap_limit_param)
+    SliderParameter tapLimitParam;
+    @InjectView(R.id.hue_param)
+    SliderParameter hueParam;
+    @InjectView(R.id.loader)
+    ProgressBar loader;
 
     public BluetoothGatt bluetoothGatt;
     public BluetoothDevice device;
 
-    BluetoothGattCharacteristic characteristic;
-    BluetoothGattService service;
+    public CommandAdapter commandAdapter;
+    public CommandAdapter pulseAdapter;
+
+    public boolean hasLoaded = false;
 
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics;
 
@@ -61,18 +94,39 @@ public class DeviceFragment extends BaseFragment {
 
             ButterKnife.inject(this, rootView);
 
-            attributeAdapter = new AttributeAdapter(getActivity());
-            attributeList.setAdapter(attributeAdapter);
+            speedParam.uuid = BluetoothUtils.CHAR_SPEED_UUID;
+            pulseBrightParam.uuid = BluetoothUtils.CHAR_PULSE_BRIGHTNESS_UUID;
+            tapSenseParam.uuid = BluetoothUtils.CHAR_TAP_SENS_UUID;
+            waveWidthParam.uuid = BluetoothUtils.CHAR_WAVE_WIDTH_UUID;
+            linearAngleParam.uuid = BluetoothUtils.CHAR_LINEAR_ANGLE_UUID;
+            radXParam.uuid = BluetoothUtils.CHAR_RAD_X_UUID;
+            radYParam.uuid = BluetoothUtils.CHAR_RAD_Y_UUID;
+            pulseWidthParam.uuid = BluetoothUtils.CHAR_PULSE_WIDTH_UUID;
+            pulseSpeedParam.uuid = BluetoothUtils.CHAR_PULSE_SPEED_UUID;
+            tapLimitParam.uuid = BluetoothUtils.CHAR_TAP_LIMIT_UUID;
+            hueParam.uuid = BluetoothUtils.CHAR_HUE_UUID;
+            hueParam.setHideNumbers();
 
+            commandAdapter = new CommandAdapter(getActivity());
+            modeSpinner.setAdapter(commandAdapter);
 
+            pulseAdapter = new CommandAdapter(getActivity());
+            pulseAdapter.isPulse = true;
+            pulseSpinner.setAdapter(pulseAdapter);
 
-            attributeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            modeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    writeToChar(attributeAdapter.getItem(position));
-//                    bluetoothGatt.readCharacteristic(attributeAdapter.getItem(position));
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    InterpolateApplication.postOnEventBus(new WriteCharaEvent(BluetoothUtils.CHAR_COMMAND_UUID, position));
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
                 }
             });
+
+
         }
 
         return rootView;
@@ -99,11 +153,6 @@ public class DeviceFragment extends BaseFragment {
             HashMap<String, String> currentServiceData = new HashMap<String, String>();
             uuid = gattService.getUuid().toString();
 
-            if (gattService.getUuid().toString().equals(BluetoothUtils.SERVICE_UUID)) {
-                isRightService = true;
-            } else {
-                Log.d("SERVICE_UUID", gattService.getUuid().toString());
-            }
             currentServiceData.put(listName, lookupAttributes(uuid, unknownServiceString));
             currentServiceData.put(listUUID, uuid);
             gattServiceData.add(currentServiceData);
@@ -119,60 +168,22 @@ public class DeviceFragment extends BaseFragment {
                 currentCharaData.put(listName, lookupAttributes(uuid, unknownCharaString));
                 currentCharaData.put(listUUID, uuid);
                 gattCharacteristicGroupData.add(currentCharaData);
-
-                if (isRightService) {
-                    if(gattCharacteristic.getUuid().toString().equals(BluetoothUtils.CHAR_PULSE_RISE_TIME_UUID)) {
-                        characteristic = gattCharacteristic;
-                    }
-                }
-                attributeAdapter.addChar(gattCharacteristic);
             }
             mGattCharacteristics.add(charas);
             gattCharacteristicData.add(gattCharacteristicGroupData);
 
             i++;
-            isRightService = false;
         }
 
-        final ArrayList<ArrayList<HashMap<String, String>>> gattFinalCharacteristicData = gattCharacteristicData;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                attributeAdapter.notifyDataSetChanged();
-//                addStuffs(gattFinalCharacteristicData);
+                loader.setVisibility(View.GONE);
+                scrollView.setVisibility(View.VISIBLE);
             }
         });
-    }
+        hasLoaded = true;
 
-//    public void addStuffs(ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData) {
-//        int i = 0;
-//        for (ArrayList<HashMap<String, String>> list : gattCharacteristicData) {
-//            i++;
-//            addTextViewWithString("List " + i + ":\n\n");
-//            for (HashMap<String, String> map : list) {
-//                for (String key : map.keySet()) {
-//                    addTextViewWithString("Key: " + key + "\nValue: " + map.get(key));
-//                }
-//            }
-//        }
-//    }
-
-//    public void addTextViewWithString(String string) {
-//        TextView textView = new TextView(getActivity());
-//        textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//        textView.setText(string);
-//
-//        container.addView(textView);
-//    }
-
-    @Subscribe
-    public void readCharacteristic(final CharacteristicReadEvent event) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-//                attributeAdapter.updateCharacteristic(event.characteristic);
-            }
-        });
     }
 
     private String lookupAttributes(String uuid, String unknown) {
@@ -190,33 +201,50 @@ public class DeviceFragment extends BaseFragment {
         getMainActivity().showFragment(new FindCubesFragment());
     }
 
-    @OnClick(R.id.write)
-    public void writePressed() {
-        byte[] val = {2};
-        if (characteristic != null) {
-            characteristic.setValue(val);
-            bluetoothGatt.writeCharacteristic(characteristic);
-        } else {
-            Toast.makeText(getActivity(), "NO CHARACTERISTIC TO WRITE TOO", Toast.LENGTH_SHORT).show();
-        }
+    @OnClick(R.id.send_pulse)
+    public void sendPulse() {
+        InterpolateApplication.postOnEventBus(new WriteCharaEvent(BluetoothUtils.CHAR_COMMAND_UUID, BluetoothUtils.pulseValueMap.get(pulseSpinner.getSelectedItemPosition())));
     }
 
-    @OnClick(R.id.write_reliable)
-    public void writeReliable() {
-        byte[] val = {2};
-        if (characteristic != null) {
-            bluetoothGatt.beginReliableWrite();
-            characteristic.setValue(val);
-            bluetoothGatt.writeCharacteristic(characteristic);
-            bluetoothGatt.executeReliableWrite();
+    @Subscribe
+    public void writeChar(WriteCharaEvent event) {
+        if (hasLoaded) {
+            BluetoothGattCharacteristic chara = BluetoothUtils.charaMap.get(event.uuid);
+            if (chara != null) {
+                Integer size = BluetoothUtils.char_size.get(event.uuid);
+                byte[] val;
+                if (size == 1) {
+                    val = new byte[]
+                            {
+                                    (byte) event.value
+                            };
+                } else {
+                    val = new byte[]
+                            {
+                                    (byte) (event.value >>> 8),
+                                    (byte) event.value
+                            };
+                }
+
+                chara.setValue(val);
+                chara.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+                bluetoothGatt.writeCharacteristic(chara);
+            } else {
+                Toast.makeText(getActivity(), "No Characteristic", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(getActivity(), "NO CHARACTERISTIC TO WRITE TOO", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Still loading", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void writeToChar(BluetoothGattCharacteristic chara) {
+        Bugsnag.leaveBreadcrumb("writeToChar: " + chara.getUuid());
         if (chara.getUuid() != null) {
             Integer size = BluetoothUtils.char_size.get(chara.getUuid().toString());
+            if (size == null) {
+                Bugsnag.notify(new Exception("Had no size!"));
+                size = 1;
+            }
             if (size != null) {
                 byte[] val;
                 if (size == 1) {
@@ -226,8 +254,11 @@ public class DeviceFragment extends BaseFragment {
                 }
 
                 chara.setValue(val);
+                chara.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
                 bluetoothGatt.writeCharacteristic(chara);
             }
+        } else {
+            Bugsnag.notify(new Exception("NULL CHARA UUID"));
         }
     }
 }

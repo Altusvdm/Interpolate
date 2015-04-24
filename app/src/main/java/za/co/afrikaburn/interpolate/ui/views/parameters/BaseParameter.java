@@ -26,6 +26,7 @@ public abstract class BaseParameter extends LinearLayout {
     public LinearLayout container;
 
     public String mTitle;
+    public String uuid;
 
     public BaseParameter(Context context, AttributeSet attrs) {
         super(context, attrs);

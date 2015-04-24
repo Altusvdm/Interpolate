@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import butterknife.InjectView;
+import za.co.afrikaburn.interpolate.Bluetooth.Events.WriteCharaEvent;
+import za.co.afrikaburn.interpolate.InterpolateApplication;
 import za.co.afrikaburn.interpolate.R;
 
 /**
@@ -26,6 +29,7 @@ public class SliderParameter extends BaseParameter {
 
     int mStart;
     int mEnd;
+    int mCurrent;
 
     public SliderParameter(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -41,9 +45,16 @@ public class SliderParameter extends BaseParameter {
         try {
             mStart = a.getInt(R.styleable.SliderParameter_startNumber, 0);
             mEnd = a.getInt(R.styleable.SliderParameter_endNumber, 255);
+            mCurrent = mStart;
         } finally {
             a.recycle();
         }
+    }
+
+    public void setHideNumbers() {
+        this.startNumber.setVisibility(View.GONE);
+        this.endNumber.setVisibility(View.GONE);
+        this.parameterSlider.setPadding(0, 0, 0, 0);
     }
 
     @Override
@@ -62,8 +73,8 @@ public class SliderParameter extends BaseParameter {
         parameterSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int currentValue = mStart + progress;
-                currentNumber.setText("" + currentValue);
+                mCurrent = mStart + progress;
+                currentNumber.setText("" + mCurrent);
             }
 
             @Override
@@ -73,7 +84,7 @@ public class SliderParameter extends BaseParameter {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                InterpolateApplication.postOnEventBus(new WriteCharaEvent(uuid, mCurrent));
             }
         });
     }

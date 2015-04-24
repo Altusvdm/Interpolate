@@ -70,6 +70,8 @@ public class FindCubesFragment extends BaseFragment {
 
             ButterKnife.inject(this, rootView);
 
+            Log.d("SERVER", BluetoothUtils.lookupServer("44656e64-7269-7469-6353-797374656d70"));
+
             listAdapter = new BLEDeviceListAdapter(getActivity());
             deviceList.setAdapter(listAdapter);
 
