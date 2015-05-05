@@ -31,6 +31,11 @@ public class BLEDeviceListAdapter extends BaseAdapter {
         devices = new ArrayList<BluetoothDevice>();
     }
 
+    public void clearDevices() {
+        devices = new ArrayList<BluetoothDevice>();
+        notifyDataSetChanged();
+    }
+
     public void addDevice(BluetoothDevice device) {
         for (BluetoothDevice existDevice : devices) {
             if (existDevice.getAddress().equals(device.getAddress())) {

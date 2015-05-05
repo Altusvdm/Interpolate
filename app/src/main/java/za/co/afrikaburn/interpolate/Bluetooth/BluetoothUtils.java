@@ -29,10 +29,8 @@ public class BluetoothUtils {
     public static final String CHAR_LINEAR_ANGLE_UUID = "44656E64726974696353797374656D76";
     public static final String CHAR_RAD_X_UUID = "44656E64726974696353797374656D77";
     public static final String CHAR_RAD_Y_UUID = "44656E64726974696353797374656D78";
-    public static final String CHAR_PULSE_WIDTH_UUID = "44656E64726974696353797374656D79";
-    public static final String CHAR_PULSE_SPEED_UUID = "44656E64726974696353797374656D7A";
-    public static final String CHAR_TAP_LIMIT_UUID = "44656E64726974696353797374656D7B";
-    public static final String CHAR_HUE_UUID = "44656E64726974696353797374656D7C";
+    public static final String CHAR_PULSE_SPEED_UUID = "44656E64726974696353797374656D79";
+    public static final String CHAR_HUE_UUID = "44656E64726974696353797374656D7A";
 
     public static final Map<String , String> characteristics = new HashMap<String , String>() {{
         put(CHAR_COMMAND_UUID, "Command (mode/event)");
@@ -43,9 +41,8 @@ public class BluetoothUtils {
         put(CHAR_LINEAR_ANGLE_UUID, "Linear Angle");
         put(CHAR_RAD_X_UUID, "Radial X");
         put(CHAR_RAD_Y_UUID, "Radial Y");
-        put(CHAR_PULSE_WIDTH_UUID, "Pulse Width");
         put(CHAR_PULSE_SPEED_UUID, "Pulse Speed");
-        put(CHAR_TAP_LIMIT_UUID, "Tap Limit");
+        put(CHAR_HUE_UUID, "Hue");
     }};
 
     public static final Map<String, Integer> char_size = new HashMap<String, Integer>() {{
@@ -57,9 +54,7 @@ public class BluetoothUtils {
         put(CHAR_LINEAR_ANGLE_UUID, 1);
         put(CHAR_RAD_X_UUID, 2);
         put(CHAR_RAD_Y_UUID, 2);
-        put(CHAR_PULSE_WIDTH_UUID, 2);
         put(CHAR_PULSE_SPEED_UUID, 2);
-        put(CHAR_TAP_LIMIT_UUID, 1);
         put(CHAR_HUE_UUID, 2);
     }};
 
@@ -95,10 +90,13 @@ public class BluetoothUtils {
         return returnString;
     }
 
-    public static String lookupChar(String uuid) {
-        String returnString = characteristics.get(getKeyUUID(uuid));
+    public static String lookupChar(BluetoothGattCharacteristic chara) {
+        String returnString = characteristics.get(getKeyUUID(chara.getUuid().toString()));
+        if (returnString != null) {
+            saveChara(chara);
+        }
         returnString = returnString == null ? CHAR_NOT_FOUND : returnString;
-        Bugsnag.leaveBreadcrumb("lookupChar uuid: " + uuid + " char: " + returnString);
+        Bugsnag.leaveBreadcrumb("lookupChar uuid: " + chara.getUuid().toString() + " char: " + returnString);
         return returnString;
     }
 

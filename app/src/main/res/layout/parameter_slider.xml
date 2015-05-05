@@ -41,5 +41,64 @@
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/padding_normal"/>
 
+    <LinearLayout
+        android:id="@+id/mul_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/mul_start_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/padding_normal"/>
+
+            <SeekBar
+                android:id="@+id/mul_parameter_slider"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/mul_end_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/padding_normal"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/mul_current_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_normal"/>
+
+            <TextView
+                android:id="@+id/mul_total_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_normal"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </LinearLayout>

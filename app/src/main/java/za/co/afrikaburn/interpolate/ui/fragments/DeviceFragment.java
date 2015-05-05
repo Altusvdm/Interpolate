@@ -36,6 +36,7 @@ import za.co.afrikaburn.interpolate.Bluetooth.Events.ServicesDiscoveredEvent;
 import za.co.afrikaburn.interpolate.Bluetooth.Events.WriteCharaEvent;
 import za.co.afrikaburn.interpolate.InterpolateApplication;
 import za.co.afrikaburn.interpolate.R;
+import za.co.afrikaburn.interpolate.events.BackPressedEvent;
 import za.co.afrikaburn.interpolate.ui.adapters.AttributeAdapter;
 import za.co.afrikaburn.interpolate.ui.adapters.CommandAdapter;
 import za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter;
@@ -65,12 +66,8 @@ public class DeviceFragment extends BaseFragment {
     SliderParameter radXParam;
     @InjectView(R.id.radial_y_param)
     SliderParameter radYParam;
-    @InjectView(R.id.pulse_width_param)
-    SliderParameter pulseWidthParam;
     @InjectView(R.id.pulse_speed_param)
     SliderParameter pulseSpeedParam;
-    @InjectView(R.id.tap_limit_param)
-    SliderParameter tapLimitParam;
     @InjectView(R.id.hue_param)
     SliderParameter hueParam;
     @InjectView(R.id.loader)
@@ -95,15 +92,14 @@ public class DeviceFragment extends BaseFragment {
             ButterKnife.inject(this, rootView);
 
             speedParam.uuid = BluetoothUtils.CHAR_SPEED_UUID;
+            speedParam.setMultiplier(1, 100);
             pulseBrightParam.uuid = BluetoothUtils.CHAR_PULSE_BRIGHTNESS_UUID;
             tapSenseParam.uuid = BluetoothUtils.CHAR_TAP_SENS_UUID;
             waveWidthParam.uuid = BluetoothUtils.CHAR_WAVE_WIDTH_UUID;
             linearAngleParam.uuid = BluetoothUtils.CHAR_LINEAR_ANGLE_UUID;
             radXParam.uuid = BluetoothUtils.CHAR_RAD_X_UUID;
             radYParam.uuid = BluetoothUtils.CHAR_RAD_Y_UUID;
-            pulseWidthParam.uuid = BluetoothUtils.CHAR_PULSE_WIDTH_UUID;
             pulseSpeedParam.uuid = BluetoothUtils.CHAR_PULSE_SPEED_UUID;
-            tapLimitParam.uuid = BluetoothUtils.CHAR_TAP_LIMIT_UUID;
             hueParam.uuid = BluetoothUtils.CHAR_HUE_UUID;
             hueParam.setHideNumbers();
 
@@ -168,6 +164,7 @@ public class DeviceFragment extends BaseFragment {
                 currentCharaData.put(listName, lookupAttributes(uuid, unknownCharaString));
                 currentCharaData.put(listUUID, uuid);
                 gattCharacteristicGroupData.add(currentCharaData);
+                BluetoothUtils.lookupChar(gattCharacteristic);
             }
             mGattCharacteristics.add(charas);
             gattCharacteristicData.add(gattCharacteristicGroupData);
@@ -196,6 +193,7 @@ public class DeviceFragment extends BaseFragment {
             return;
         }
         bluetoothGatt.close();
+        bluetoothGatt.disconnect();
         bluetoothGatt = null;
 
         getMainActivity().showFragment(new FindCubesFragment());
@@ -204,6 +202,16 @@ public class DeviceFragment extends BaseFragment {
     @OnClick(R.id.send_pulse)
     public void sendPulse() {
         InterpolateApplication.postOnEventBus(new WriteCharaEvent(BluetoothUtils.CHAR_COMMAND_UUID, BluetoothUtils.pulseValueMap.get(pulseSpinner.getSelectedItemPosition())));
+    }
+
+    @Subscribe
+    public void onBackPressed(BackPressedEvent event) {
+        if (bluetoothGatt == null) {
+            return;
+        }
+        bluetoothGatt.close();
+        bluetoothGatt.disconnect();
+        bluetoothGatt = null;
     }
 
     @Subscribe
@@ -223,8 +231,8 @@ public class DeviceFragment extends BaseFragment {
                 } else {
                     val = new byte[]
                             {
-                                    (byte) (event.value >>> 8),
-                                    (byte) event.value
+                                    (byte) event.value,
+                                    (byte) (event.value >> 8 & 0xFF)
                             };
                 }
                 toast = toast + "\nFound char byte is: " + val;
@@ -233,36 +241,8 @@ public class DeviceFragment extends BaseFragment {
                 bluetoothGatt.writeCharacteristic(chara);
             } else {
                 toast = toast + "\nNo characteristic :(";
+                Toast.makeText(getActivity(), toast, Toast.LENGTH_SHORT).show();
             }
-        } else {
-            toast = toast + "\nStill loading";
-        }
-
-        Toast.makeText(getActivity(), toast, Toast.LENGTH_SHORT).show();
-    }
-
-    public void writeToChar(BluetoothGattCharacteristic chara) {
-        Bugsnag.leaveBreadcrumb("writeToChar: " + chara.getUuid());
-        if (chara.getUuid() != null) {
-            Integer size = BluetoothUtils.char_size.get(chara.getUuid().toString());
-            if (size == null) {
-                Bugsnag.notify(new Exception("Had no size!"));
-                size = 1;
-            }
-            if (size != null) {
-                byte[] val;
-                if (size == 1) {
-                    val = new byte[]{2};
-                } else {
-                    val = new byte[]{2, 2};
-                }
-
-                chara.setValue(val);
-                chara.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
-                bluetoothGatt.writeCharacteristic(chara);
-            }
-        } else {
-            Bugsnag.notify(new Exception("NULL CHARA UUID"));
         }
     }
 }

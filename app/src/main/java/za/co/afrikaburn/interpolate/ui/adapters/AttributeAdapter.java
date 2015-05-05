@@ -87,7 +87,7 @@ public class AttributeAdapter extends BaseAdapter {
             }
             name = name + "\nChar: ";
             if (characteristic.getUuid() != null) {
-                name = name + BluetoothUtils.lookupChar(characteristic.getUuid().toString());
+                name = name + BluetoothUtils.lookupChar(characteristic);
             } else {
                 name = name + "NULL CHAR UUID";
             }

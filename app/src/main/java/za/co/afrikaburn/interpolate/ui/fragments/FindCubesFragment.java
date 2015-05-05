@@ -16,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bugsnag.android.Bugsnag;
@@ -26,12 +28,15 @@ import java.util.UUID;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import za.co.afrikaburn.interpolate.Bluetooth.BluetoothUtils;
 import za.co.afrikaburn.interpolate.InterpolateApplication;
 import za.co.afrikaburn.interpolate.R;
+import za.co.afrikaburn.interpolate.events.BackPressedEvent;
 import za.co.afrikaburn.interpolate.events.MenuItemEvent;
 import za.co.afrikaburn.interpolate.ui.adapters.BLEDeviceListAdapter;
 import za.co.afrikaburn.interpolate.ui.views.ModeView;
+import za.co.afrikaburn.interpolate.ui.views.parameters.SliderParameter;
 
 /**
  * Created by Altus on 2015/04/17.
@@ -40,6 +45,10 @@ public class FindCubesFragment extends BaseFragment {
 
     @InjectView(R.id.cubes_list)
     ListView deviceList;
+    @InjectView(R.id.search_spinner)
+    ProgressBar searchSpinner;
+    @InjectView(R.id.stop_button)
+    Button stopButton;
 
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
@@ -70,8 +79,6 @@ public class FindCubesFragment extends BaseFragment {
 
             ButterKnife.inject(this, rootView);
 
-            Log.d("SERVER", BluetoothUtils.lookupServer("44656e64-7269-7469-6353-797374656d70"));
-
             listAdapter = new BLEDeviceListAdapter(getActivity());
             deviceList.setAdapter(listAdapter);
 
@@ -85,7 +92,7 @@ public class FindCubesFragment extends BaseFragment {
                         DeviceFragment deviceFragment = new DeviceFragment();
                         deviceFragment.device = device;
                         deviceFragment.bluetoothGatt = device.connectGatt(getActivity(), false, InterpolateApplication.getGattCallback());
-                        getMainActivity().showFragment(deviceFragment);
+                        getMainActivity().showFragment(deviceFragment, null, "Device");
                     }
                 }
             });
@@ -96,7 +103,15 @@ public class FindCubesFragment extends BaseFragment {
         return rootView;
     }
 
+    @Subscribe
+    public void backPressed(BackPressedEvent event) {
+        mBluetoothAdapter.stopLeScan(mLeScanCallback);
+    }
+
     private void startDetecting() {
+        searchSpinner.setVisibility(View.VISIBLE);
+        mScanning = true;
+        stopButton.setText("Stop Scanning");
         // Initializes Bluetooth adapter.
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
@@ -114,12 +129,41 @@ public class FindCubesFragment extends BaseFragment {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mScanning = false;
-                mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                stopScanning();
             }
         }, 10 * 10000);
 
         mScanning = true;
         mBluetoothAdapter.startLeScan(mLeScanCallback);
+    }
+
+    public void stopScanning() {
+        mScanning = false;
+        mBluetoothAdapter.stopLeScan(mLeScanCallback);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                searchSpinner.setVisibility(View.GONE);
+                stopButton.setText("Start Scanning");
+            }
+        });
+    }
+
+    @OnClick(R.id.stop_button)
+    public void onStopPressed() {
+        if (mScanning) {
+            stopScanning();
+        } else {
+            startDetecting();
+        }
+    }
+
+    @OnClick(R.id.clear_list)
+    public void clearPressed() {
+        if (mScanning) {
+            stopScanning();
+        }
+
+        listAdapter.clearDevices();
     }
 }

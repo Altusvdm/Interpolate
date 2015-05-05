@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import za.co.afrikaburn.interpolate.InterpolateApplication;
 import za.co.afrikaburn.interpolate.R;
+import za.co.afrikaburn.interpolate.events.BackPressedEvent;
 import za.co.afrikaburn.interpolate.events.MenuItemEvent;
 import za.co.afrikaburn.interpolate.model.Cube;
 import za.co.afrikaburn.interpolate.model.CubeMode;
@@ -85,6 +86,12 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return isHandled;
+    }
+
+    @Override
+    public void onBackPressed() {
+        InterpolateApplication.postOnEventBus(new BackPressedEvent());
+        super.onBackPressed();
     }
 
     public void showFragment(Fragment fragment) {

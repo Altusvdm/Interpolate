@@ -66,9 +66,11 @@ public class GattCallback extends android.bluetooth.BluetoothGattCallback {
                                       BluetoothGattCharacteristic characteristic,
                                       int status) {
         if (status == BluetoothGatt.GATT_SUCCESS) {
-            Toast.makeText(InterpolateApplication.getSugarContext(), "Wrote Success", Toast.LENGTH_SHORT).show();
+            Log.d("SUCCESS", "Wrote success");
+//            Toast.makeText(InterpolateApplication.getSugarContext(), "Wrote Success", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(InterpolateApplication.getSugarContext(), "Wrote Failed", Toast.LENGTH_SHORT).show();
+            Log.d("FAIL", "Fail wrote");
+//            Toast.makeText(InterpolateApplication.getSugarContext(), "Wrote Failed", Toast.LENGTH_SHORT).show();
         }
     }
 }
